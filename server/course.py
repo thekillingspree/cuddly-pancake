@@ -7,6 +7,18 @@ import jwt
 
 course_routes = Blueprint('course_routes', __name__)
 
+@course_routes.route('/api/course/all', methods=['GET'])
+def all_courses():
+    try:
+        courses = Course.objects()
+        all_courses = []
+        for course in courses:
+            all_courses.append(json.loads(course.to_json()))
+        return jsonify(all_courses), 200
+    except KeyError:
+        return jsonify({'error': 'Please provide all fields'}), 400
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
 
 @course_routes.route('/api/course/new', methods=['POST'])
 @admin_login_required

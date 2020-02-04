@@ -14,7 +14,8 @@ user_videos_routes = Blueprint('user_videos_routes', __name__)
 
 def get_info():
     try:
-        video = Video.objects(id=g.video['id']).first()
+        course = Course.objects(id=req.json['cid']).first()
+        video = Video.objects(id=req.json['vid'], course=course).first()
         return jsonify({"video":video}), 200
     except:
         return jsonify({"error":"Something went wrong"}), 400

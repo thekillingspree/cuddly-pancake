@@ -110,6 +110,26 @@ def enter():
     except Exception as e:
         return jsonify({'error': str(e)}), 400
 
+@user_routes.route('/api/users/enrolled', methods=['GET'])
+@user_login_required
+@user_is_authorized
+def enrolled():
+    
+    try:
+        user = User.objects(id=g.user['id']).first() 
+        if not user:
+            raise Exception("Please Signup first.")
+        enrolled_courses = []
+        for course in user.enrolled:
+            enrolled_courses.append(json.loads(course.to_json()))
+        return jsonify(enrolled_courses), 200
+    except KeyError:
+        return jsonify({'error': 'id and uid is required.'}), 400
+    except ValidationError:
+        return jsonify({'error': 'Please provide a valid id'}), 400
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
+
 @user_routes.route('/api/users/completed', methods=['POST'])
 @user_login_required
 @user_is_authorized

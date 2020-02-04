@@ -39,7 +39,7 @@ def get_info():
         return jsonify({"error":str(e)}), 400
 
 
-@video_routes.route('/api/course/allvideos', methods=['GET'])
+@video_routes.route('/api/course/allvideos', methods=['GET', 'POST'])
 def get_all_videos_course():
     try:
         course = Course.objects(id=request.json['cid']).first()

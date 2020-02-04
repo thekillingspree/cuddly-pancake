@@ -94,7 +94,7 @@ def enter():
             raise Exception("Please Signup first.")
         if not course:
             raise Exception('Invalid Course id')
-        if user.current_course and Course.objects(id=user.current_course.id).first():
+        if user.current_course and user.current_course == course:
             raise Exception('You have already enrolled to this course.')
         user.current_course = course
         course.enrolled_num = course.enrolled_num + 1

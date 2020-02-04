@@ -9,7 +9,7 @@ import jwt
 
 video_routes = Blueprint('video_routes', __name__)
 
-@admin_routes.route('/api/add-video', methods=['POST'])
+@video_routes.route('/api/admin/add-video', methods=['POST'])
 @admin_login_required
 @admin_is_authorized
 

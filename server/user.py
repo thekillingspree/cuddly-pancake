@@ -35,7 +35,7 @@ def signin():
         del userdict['password']
         return jsonify({'result': userdict , 'token': token.decode()}), 200
     except KeyError:
-        return jsonify({'errors': 'Please provide all the required fields'}), 400
+        return jsonify({'error': 'Please provide all the required fields'}), 400
     except Exception as e:
         return jsonify({'error': str(e)}), 400
 

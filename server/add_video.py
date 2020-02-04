@@ -9,23 +9,20 @@ import jwt
 
 video_routes = Blueprint('video_routes', __name__)
 
-@admin_routes.route('/api/add-video', methods=['POST'])
+@video_routes.route('/api/course/addvideo', methods=['POST'])
 @admin_login_required
 @admin_is_authorized
-
 def addvideo():
     try:
         name = request.json['name']
-        course = request.json['course']
+        course = Course.objects(id=request.json['cid']).first()
         url = request.json['url']
-        if not Course.objects(course=course):
+        if not course:
             return jsonify({"error": "Course not found"}), 400
-        admin = Admin.objects(id=g.admin['id']).first()
-        if not course in admin.courses:
-            return jsonify({"error": "Invalid admin access"}), 400
-
-
+        
         video = Video(name=name, course=course, url=url)
+        # video.course = course
         video.save()
-    except:
-        return jsonify({"error": "Something went wrong"}), 400
+        return video.to_json(), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400

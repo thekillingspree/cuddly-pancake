@@ -1,7 +1,11 @@
 from mongoengine import *
 connect(db='quick-entry', host='mongodb+srv://lernen:sro0dcS2bvcFDUIf@cluster0-durfo.mongodb.net/lernen?retryWrites=true&w=majority')
 
-
+class Weight(Document):
+    course = ReferenceField('Course')
+    user = ReferenceField('User')
+    weight = FloatField(default=1.0)
+    
 class Course(Document):
     name = StringField(required=True, unique=True)
     enrolled_num = IntField(default=0)
@@ -32,6 +36,7 @@ class User(Document):
     email = StringField(required=True, unique=True)
     password = StringField(required=True)
     current_course = ReferenceField(Course)
+    current_video = ReferenceField(Video)
     enrolled = ListField(ReferenceField(Course))
 
 
